@@ -1,6 +1,10 @@
 class TasksController < ActionController::Base
   def index
-    @tasks = ['task 1', 'task 2', 'task 3']
+    @tasks = Task.all
+  end
+
+  def show
+    @task = Task.find(params[:id])
   end
 
   def new
@@ -15,6 +19,25 @@ class TasksController < ActionController::Base
 
     task.save
 
+    redirect_to '/tasks'
+  end
+
+  def edit
+    @task = Task.find(params[:id])
+  end
+
+  def update
+    task = Task.find(params[:id])
+    task.update({
+      title: params[:task][:title],
+      description: params[:task][:description]
+      })
+    task.save
+    redirect_to "/tasks/#{task.id}"
+  end
+
+  def destroy
+    Task.destroy(params[:id])
     redirect_to '/tasks'
   end
 end
